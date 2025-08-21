@@ -1,0 +1,137 @@
+ai:
+  provider: openai
+  model: gpt-4o-mini
+  temperature: 0.5
+  offline_demo_mode: false
+  system_prompt: 'You are a precise data assistant. Answer using the provided query,
+    SQL, and rows.
+
+    If the data is insufficient, say so and suggest a better query. Answer in the
+    same language as the user
+
+    '
+  sql_synth_prompt: 'You are an expert SQL generator. Produce a single valid SQLite
+    SQL query that best answers the user.
+
+    Use ONLY the tables and columns present in the schema. Prefer simple SELECTs.
+    No comments.
+
+    If aggregation is needed, do it. If filters are implied, add them. Limit results
+    when large.
+
+    Output ONLY the SQL.  Filter null out for the interested column. Dates are not
+    formatted as string.
+
+    '
+data:
+  file_path: data/SPW.csv
+  table_name: spw
+  additional_details: 'The "spw" table contains campaign and promotion metadata for
+    retail and mall partners.
+
+    Columns:
+
+    trans_id: unique transaction or record identifier (string)
+
+    promotion_type: type of promotion (e.g., Bank, Mall/VIZ/Platinum)
+
+    promotion_id: unique promotion identifier (string)
+
+    promotion_code: internal campaign code (string)
+
+    promotion_name: campaign title or name (string)
+
+    campaign_period_start: campaign start datetime (ISO format with timezone)
+
+    campaign_period_end: campaign end datetime (ISO format with timezone)
+
+    promotion_create_date: datetime when promotion was created
+
+    promotion_update_date: datetime when promotion was last updated
+
+    conditions: detailed promotion conditions (string, may include Thai text)
+
+    condition_headline_level_1: headline or summary condition (string)
+
+    condition_headline_level_2: sub-headline or secondary condition (string)
+
+    short_description: brief description of promotion (string)
+
+    condition_no: condition identifier (string)
+
+    condition_criteria: full condition description (string)
+
+    tier_spending_condition: spending threshold for eligibility (integer)
+
+    condition_building: applicable buildings/malls (comma-separated string)
+
+    main_reward_type: type of reward (e.g., BANK_PARTNER, PHYSICAL_GIFT_CARD)
+
+    main_reward_value: numeric value of reward (float or integer depending on type)
+
+    main_reward_usage_condition: usage restriction on rewards (string)
+
+    included_list_category_code: category codes included (string)
+
+    include_list_category_name: category names included (string)
+
+    included_list_brand_code: brand codes included (string)
+
+    include_list_brand_name: brand names included (string)
+
+    include_list_tenant_id: tenant IDs included (string)
+
+    include_list_tenant_name: tenant names included (string)
+
+    excluded_list_category_code: category codes excluded (string)
+
+    exclude_list_category_name: category names excluded (string)
+
+    excluded_list_brand_code: brand codes excluded (string)
+
+    exclude_list_brand_name: brand names excluded (string)
+
+    exclude_list_tenant_id: tenant IDs excluded (string)
+
+    exclude_list_tenant_name: tenant names excluded (string)
+
+    category_criteria_created_date: datetime when category criteria was created
+
+    category_criteria_updated_date: datetime when category criteria was last updated
+
+    terms_and_conditions: full text of promotion terms and conditions (string)
+
+    artwork/key_visual: file reference or identifier for campaign artwork (string)
+
+
+    customer_artwork: custom artwork flag or reference (string)
+
+    headline_level_1: main headline text (string)
+
+    multiple_promotion_eligibility_(extra_flag): boolean flag indicating if multiple
+    promotions can be combined (TRUE/FALSE)'
+snippets:
+- name: Count promotions by type
+  sql: 'SELECT promotion_type, COUNT(*) AS promotion_count
+
+    FROM promotions
+
+    GROUP BY promotion_type
+
+    ORDER BY promotion_count DESC;'
+- name: Find currently active promotions
+  sql: 'SELECT promotion_name, campaign_period_start, campaign_period_end
+
+    FROM promotions
+
+    WHERE CURRENT_DATE BETWEEN campaign_period_start AND campaign_period_end
+
+    ORDER BY campaign_period_end;'
+- name: Top rewards by value
+  sql: 'SELECT main_reward_type, MAX(main_reward_value) AS max_value
+
+    FROM promotions
+
+    GROUP BY main_reward_type
+
+    ORDER BY max_value DESC;'

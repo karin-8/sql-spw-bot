@@ -1,0 +1,10 @@
+# Tested on Python 3.13
+streamlit>=1.36.0
+langchain>=0.2.16
+langchain-core>=0.2.38
+langchain-openai>=0.1.21
+openai>=1.40.2
+pydantic>=2.7.4
+python-dotenv>=1.0.1
+PyYAML>=6.0.1
+openpyxl>=3.1.2

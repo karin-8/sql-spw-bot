@@ -1,0 +1,10 @@
+date,customer,item,quantity,price
+2025-08-01,Alice,Widget,2,9.99
+2025-08-01,Bob,Gizmo,1,19.50
+2025-08-01,Chai,Widget,1,9.99
+2025-08-02,Alice,Gadget,3,5.25
+2025-08-02,Dee,Gizmo,2,19.50
+2025-08-02,Bob,Gadget,5,5.25
+2025-08-03,Alice,Widget,2,9.99
+2025-08-03,Chai,Gizmo,1,19.50
+2025-08-03,Eve,Gadget,4,5.25
